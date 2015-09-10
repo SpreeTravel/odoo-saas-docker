@@ -19,7 +19,7 @@ RUN set -x; \
         && apt-get -y install -f --no-install-recommends \
            python-oauthlib python-openssl python-ndg-httpsclient python-pyasn1 python-pip git-core \
         && pip install inflect \
-        && pip install erppeek
+        && pip install erppeek \
         && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
