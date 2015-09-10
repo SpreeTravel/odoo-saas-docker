@@ -20,8 +20,8 @@ export PGHOST PGPORT PGUSER PGPASSWORD PGDB
 
 python /etc/odoo/makedb.py
 
-openerp-server -c /etc/odoo/openerp-server.conf -d '$SERVER_SUBDOMAIN' -i saas_server_docker --without-demo=all --stop-after-init
-openerp-server -c /etc/odoo/openerp-server.conf -d '$MAIN_DOMAIN' -i saas_portal_docker --without-demo=all --stop-after-init
+openerp-server -c /etc/odoo/openerp-server.conf -d $SERVER_SUBDOMAIN -i saas_server_docker --without-demo=all --stop-after-init
+openerp-server -c /etc/odoo/openerp-server.conf -d $MAIN_DOMAIN -i saas_portal_docker --without-demo=all --stop-after-init
 
 case "$1" in
 	--)
