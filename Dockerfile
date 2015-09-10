@@ -17,9 +17,6 @@ RUN set -x; \
         && echo '40e8b906de658a2221b15e4e8cd82565a47d7ee8 wkhtmltox.deb' | sha1sum -c - \
         && dpkg --force-depends -i wkhtmltox.deb \
         && apt-get -y install -f --no-install-recommends \
-           python-oauthlib python-openssl python-ndg-httpsclient python-pyasn1 python-pip git-core \
-        && pip install inflect \
-        && pip install erppeek \
         && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
@@ -33,6 +30,12 @@ RUN set -x; \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
 
+RUN set -x; \
+    apt-get update \
+    && apt-get install -y --no-install-recommends \
+       python-oauthlib python-openssl python-ndg-httpsclient python-pyasn1 python-pip git-core \
+    && pip install inflect \
+    && pip install erppeek
 
 # Download Odoo SaaS Tools Addons
 RUN git clone https://github.com/kaerdsar/odoo-saas-tools.git /mnt/odoo-saas-tools
