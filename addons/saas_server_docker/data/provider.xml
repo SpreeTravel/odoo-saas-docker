@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="saas_server.saas_oauth_provider" model="auth.oauth.provider">
+            <field name="client_id">server_client_id</field>
+        </record>
+
+    </data>
+</openerp>

@@ -17,6 +17,9 @@ RUN set -x; \
         && echo '40e8b906de658a2221b15e4e8cd82565a47d7ee8 wkhtmltox.deb' | sha1sum -c - \
         && dpkg --force-depends -i wkhtmltox.deb \
         && apt-get -y install -f --no-install-recommends \
+           python-oauthlib python-openssl python-ndg-httpsclient python-pyasn1 python-pip git-core \
+        && pip install inflect \
+        && pip install erppeek
         && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
@@ -30,13 +33,29 @@ RUN set -x; \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
 
-# Copy entrypoint script and Odoo configuration file
-COPY ./entrypoint.sh /
-COPY ./openerp-server.conf /etc/odoo/
+
+# Download Odoo SaaS Tools Addons
+RUN git clone https://github.com/kaerdsar/odoo-saas-tools.git /mnt/odoo-saas-tools
+
+# Add Odoo Docker Addons
+COPY addons /addons
+RUN cp -a /addons/. /mnt/odoo-saas-tools/
+
+# Update Odoo Conf
+COPY conf/openerp-server.conf /etc/odoo/
 RUN chown odoo /etc/odoo/openerp-server.conf
 
+# Copy python script
+COPY makedb.py /etc/odoo/
+RUN chown odoo /etc/odoo/makedb.py
+
+# Copy entrypoint script and Odoo configuration file
+COPY ./entrypoint.sh /
+# COPY ./openerp-server.conf /etc/odoo/
+# RUN chown odoo /etc/odoo/openerp-server.conf
+
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
-VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
+# VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
 
 # Expose Odoo services
 EXPOSE 8069 8071
