@@ -13,8 +13,8 @@ conn = connect(
 
 conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cr = conn.cursor()
-cr.execute('CREATE DATABASE {} OWNER {};'.format(os.environ['MAIN_DOMAIN'], os.environ['PGUSER']))
-cr.execute('CREATE DATABASE {} OWNER {};'.format(os.environ['SERVER_SUBDOMAIN'], os.environ['PGUSER']))
+cr.execute('CREATE DATABASE "{}" OWNER {};'.format(os.environ['MAIN_DOMAIN'], os.environ['PGUSER']))
+cr.execute('CREATE DATABASE "{}" OWNER {};'.format(os.environ['SERVER_SUBDOMAIN'], os.environ['PGUSER']))
 cr.close()
 conn.close()
 
