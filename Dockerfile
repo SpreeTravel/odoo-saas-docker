@@ -38,7 +38,7 @@ RUN set -x; \
     && pip install erppeek
 
 # Download Odoo SaaS Tools Addons
-RUN git clone https://github.com/kaerdsar/odoo-saas-tools.git /mnt/odoo-saas-tools
+RUN git clone -b upstream https://github.com/kaerdsar/odoo-saas-tools.git /mnt/odoo-saas-tools
 
 # Add Odoo Docker Addons
 COPY addons /addons
