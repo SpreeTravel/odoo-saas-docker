@@ -37,7 +37,3 @@ except:
     st = 1
     print "done!"
 
-print "\tExiting with status {}".format(st)
-
-sys.exit(st)
-
