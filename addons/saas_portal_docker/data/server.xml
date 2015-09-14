@@ -5,7 +5,7 @@
         <record id="server1_com" model="saas_portal.server">
             <field name="name">server_subdomain</field>
             <field name="client_id">server_client_id</field>
-            <field name="request_port">8069</field>
+            <field name="request_port">80</field>
         </record>
 
     </data>
