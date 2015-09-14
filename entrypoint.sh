@@ -14,7 +14,7 @@ echo "PostgreSQL variables exported, attempting to create initial databases"
 
 python /etc/odoo/makedb.py
 
-if [ ! -f /etc/odoo/firstrun.lock ]
+if [ ! -f /mnt/odoo-saas-tools/firstrun.lock ]
 then
 	echo "Initial databases succesfully created, performing initial setup"
 	# Generate UUID for the server database
@@ -31,7 +31,7 @@ then
 	echo "Installing docker modules on portal database"
 	openerp-server -c /etc/odoo/openerp-server.conf -d $MAIN_DOMAIN -i saas_portal_docker --without-demo=all --stop-after-init
 
-	echo "Done" > /etc/odoo/firstrun.lock
+	echo "Done" > /mnt/odoo-saas-tools/firstrun.lock
 else
 	echo "Databases already existant... continuing"
 fi

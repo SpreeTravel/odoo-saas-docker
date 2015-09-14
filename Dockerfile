@@ -38,6 +38,7 @@ RUN set -x; \
 
 # Download Odoo SaaS Tools Addons
 RUN git clone -b upstream https://github.com/kaerdsar/odoo-saas-tools.git /mnt/odoo-saas-tools
+RUN chown odoo /mnt/odoo-saas-tools/
 
 # Add Odoo Docker Addons
 COPY addons /mnt/odoo-saas-docker/
@@ -50,13 +51,8 @@ RUN chown odoo /etc/odoo/openerp-server.conf
 COPY makedb.py /etc/odoo/
 RUN chown odoo /etc/odoo/makedb.py
 
-# Copy entrypoint script and Odoo configuration file
+# Copy entrypoint script
 COPY ./entrypoint.sh /
-# COPY ./openerp-server.conf /etc/odoo/
-# RUN chown odoo /etc/odoo/openerp-server.conf
-
-# Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
-# VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
 
 # Expose Odoo services
 EXPOSE 8069 8071
