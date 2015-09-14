@@ -38,10 +38,11 @@ RUN set -x; \
 
 # Download Odoo SaaS Tools Addons
 RUN git clone -b upstream https://github.com/kaerdsar/odoo-saas-tools.git /mnt/odoo-saas-tools
-RUN chown odoo /mnt/odoo-saas-tools/
+RUN chown -R odoo /mnt/odoo-saas-tools/
 
 # Add Odoo Docker Addons
 COPY addons /mnt/odoo-saas-docker/
+RUN chown -R odoo /mnt/odoo-saas-docker/
 
 # Update Odoo Conf
 COPY conf/openerp-server.conf /etc/odoo/
