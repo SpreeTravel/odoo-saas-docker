@@ -16,6 +16,9 @@ python /etc/odoo/makedb.py
 
 if [ ! -f /mnt/odoo-saas-tools/firstrun.lock ]
 then
+	if [ x$CUSTOM_MODULES != x ]; then
+		git clone $CUSTOM_MODULES /mnt/odoo-custom-addons
+	fi
 	echo "Initial databases succesfully created, performing initial setup"
 	# Generate UUID for the server database
 	uuid=$(cat /proc/sys/kernel/random/uuid)
@@ -35,6 +38,11 @@ then
 	echo "Done" > /mnt/odoo-saas-tools/firstrun.lock
 else
 	echo "Databases already existant... continuing"
+	cd /mnt/odoo-saas-tools && git pull origin upstream
+
+	if [ x$CUSTOM_MODULES != x ]; then
+		cd /mnt/odoo-custom-addons && git pull
+	fi
 fi
 
 echo "Running openerp-server"

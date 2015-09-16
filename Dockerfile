@@ -40,6 +40,10 @@ RUN set -x; \
 RUN git clone -b upstream https://github.com/kaerdsar/odoo-saas-tools.git /mnt/odoo-saas-tools
 RUN chown -R odoo /mnt/odoo-saas-tools/
 
+# Prepare Odoo custom addons
+RUN mkdir -p /mnt/odoo-custom-addons/
+RUN chown -R odoo /mnt/odoo-custom-addons/
+
 # Add Odoo Docker Addons
 COPY addons /mnt/odoo-saas-docker/
 RUN chown -R odoo /mnt/odoo-saas-docker/
