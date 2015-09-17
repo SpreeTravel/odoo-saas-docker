@@ -28,7 +28,7 @@ then
 		git clone $x $REPO_PATH
 		CUSTOM_MODULES_LIST="$CUSTOM_MODULES_LIST,$REPO_PATH"
 	done
-	sed -i "s/,$CUSTOM_MODULES_PATH/$CUSTOM_MODULES_LIST/g" $OPENERP_SERVER
+	sed -i "s/,$CUSTOM_MODULES_PATH/$CUSTOM_MODULES_LIST/g" /etc/odoo/openerp-server.conf
 
 	echo "Initial databases succesfully created, performing initial setup"
 	# Generate UUID for the server database
@@ -42,9 +42,9 @@ then
 
 	# Install docker modules on portal and server database
 	echo "Installing docker modules on server database"
-	openerp-server -c $OPENERP_SERVER -d $SERVER_SUBDOMAIN -i saas_server_docker --without-demo=all --stop-after-init
+	openerp-server -c /etc/odoo/openerp-server.conf -d $SERVER_SUBDOMAIN -i saas_server_docker --without-demo=all --stop-after-init
 	echo "Installing docker modules on portal database"
-	openerp-server -c $OPENERP_SERVER -d $MAIN_DOMAIN -i saas_portal_docker --without-demo=all --stop-after-init
+	openerp-server -c /etc/odoo/openerp-server.conf -d $MAIN_DOMAIN -i saas_portal_docker --without-demo=all --stop-after-init
 
 	echo "Done" > /mnt/odoo-saas-tools/firstrun.lock
 else
