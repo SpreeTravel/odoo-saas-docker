@@ -21,8 +21,9 @@ then
 	echo "Cloning custom addons repositories into $CUSTOM_MODULES_PATH"
 	CUSTOM_MODULES_LIST=""
 	count=0
-	for x in $CUSTOM_MODULES; do
-		((count++))
+	for x in $CUSTOM_MODULES
+	do
+		count=$((count+1))
 		REPO_PATH=$CUSTOM_MODULES_PATH/custom_$count
 		echo "Creating directory $REPO_PATH"
 		mkdir -p $REPO_PATH
