@@ -24,11 +24,14 @@ then
 	for x in $CUSTOM_MODULES; do
 		((count++))
 		REPO_PATH=$CUSTOM_MODULES_PATH/custom_$count
+		echo "Creating directory $REPO_PATH"
 		mkdir -p $REPO_PATH
+		echo "Cloning $x into $REPO_PATH"
 		git clone $x $REPO_PATH
 		CUSTOM_MODULES_LIST="$CUSTOM_MODULES_LIST,$REPO_PATH"
 	done
-	sed -i "s/,$CUSTOM_MODULES_PATH/$CUSTOM_MODULES_LIST/g" /etc/odoo/openerp-server.conf
+	echo "Replacing ,$CUSTOM_MODULES_PATH with $CUSTOM_MODULES_LIST on /etc/odoo/openerp-server.conf"
+	sed -i "s|,$CUSTOM_MODULES_PATH|$CUSTOM_MODULES_LIST|g" /etc/odoo/openerp-server.conf
 
 	echo "Initial databases succesfully created, performing initial setup"
 	# Generate UUID for the server database
