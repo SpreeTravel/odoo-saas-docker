@@ -3,11 +3,11 @@
 set -e
 
 # Set odoo database host, port, user and password
-: ${PGHOST:=${RDS_HOSTNAME:=${PGHOST:='localhost'}}}
-: ${PGPORT:=${RDS_PORT:=${PGPORT:=5432}}}
+: ${PGHOST:=${RDS_HOSTNAME:=${PGHOST:=${DB_PORT_5432_TCP_ADDR:='localhost'}}}}
+: ${PGPORT:=${RDS_PORT:=${PGPORT:=${DB_PORT_5432_TCP_PORT:=5432}}}}
+: ${PGUSER:=${RDS_USERNAME:=${PGUSER:=${DB_ENV_POSTGRES_USER:='postgres'}}}}
+: ${PGPASSWORD:=${RDS_PASSWORD:=${PGPASSWORD:=$DB_ENV_POSTGRES_PASSWORD}}}
 : ${PGDB:=${RDS_DB_NAME:=${PGDB:='postgres'}}}
-: ${PGUSER:=${RDS_USERNAME:=${PGUSER:='odoo'}}}
-: ${PGPASSWORD:=${RDS_PASSWORD:=${PGPASSWORD}}}
 export PGHOST PGPORT PGUSER PGPASSWORD PGDB
 
 echo "PostgreSQL variables exported, attempting to create initial databases"
@@ -15,24 +15,25 @@ echo "PostgreSQL variables exported, attempting to create initial databases"
 python /etc/odoo/makedb.py
 
 CUSTOM_MODULES_PATH=/mnt/odoo-custom-addons
+CUSTOM_REPOS_PATH=/mnt/odoo-custom-repos
 
 if [ ! -f /mnt/odoo-saas-tools/firstrun.lock ]
 then
 	echo "Cloning custom addons repositories into $CUSTOM_MODULES_PATH"
-	CUSTOM_MODULES_LIST=""
 	count=0
-	for x in $CUSTOM_MODULES
+	for x in $CUSTOM_REPOS
 	do
 		count=$((count+1))
-		REPO_PATH=$CUSTOM_MODULES_PATH/custom_$count
+		REPO_PATH=$CUSTOM_REPOS_PATH/repo_$count
 		echo "Creating directory $REPO_PATH"
 		mkdir -p $REPO_PATH
 		echo "Cloning $x into $REPO_PATH"
 		git clone $x $REPO_PATH
-		CUSTOM_MODULES_LIST="$CUSTOM_MODULES_LIST,$REPO_PATH"
+		for addon in `ls -d $REPO_PATH/*/`; do
+			echo "Copying $addon to $CUSTOM_MODULES_PATH"
+			cp -R $addon $CUSTOM_MODULES_PATH/
+		done
 	done
-	echo "Replacing ,$CUSTOM_MODULES_PATH with $CUSTOM_MODULES_LIST on /etc/odoo/openerp-server.conf"
-	sed -i "s|,$CUSTOM_MODULES_PATH|$CUSTOM_MODULES_LIST|g" /etc/odoo/openerp-server.conf
 
 	echo "Initial databases succesfully created, performing initial setup"
 	# Generate UUID for the server database
@@ -55,8 +56,13 @@ else
 	echo "Databases already existant... updating Git repositories"
 	cd /mnt/odoo-saas-tools && git pull origin upstream
 
-	for x in `ls -d $CUSTOM_MODULES_PATH/*/`; do
+	rm -rf $CUSTOM_MODULES_PATH/*
+
+	for x in `ls -d $CUSTOM_REPOS_PATH/*/`; do
 		cd $x && git pull
+		for addon in `ls -d $x/*/`; do
+			cp -R $addon $CUSTOM_MODULES_PATH/
+		done
 	done
 fi
 

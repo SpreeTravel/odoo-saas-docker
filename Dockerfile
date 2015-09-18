@@ -43,6 +43,8 @@ RUN chown -R odoo /mnt/odoo-saas-tools/
 # Prepare Odoo custom addons
 RUN mkdir -p /mnt/odoo-custom-addons/
 RUN chown -R odoo /mnt/odoo-custom-addons/
+RUN mkdir -p /mnt/odoo-custom-repos/
+RUN chown -R odoo /mnt/odoo-custom-repos/
 
 # Add Odoo Docker Addons
 COPY addons /mnt/odoo-saas-docker/
