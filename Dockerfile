@@ -62,7 +62,7 @@ RUN chown odoo /etc/odoo/makedb.py
 COPY ./entrypoint.sh /
 
 # Expose Odoo services
-EXPOSE 8069 8071
+EXPOSE 8069 8071 8072
 
 # Set the default config file
 ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
