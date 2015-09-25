@@ -64,6 +64,12 @@ else
 			cp -R $addon $CUSTOM_MODULES_PATH/
 		done
 	done
+
+	# Update docker modules on portal and server database in order to force an update_modules_list
+	echo "Upgrading docker modules on server database"
+	openerp-server -c /etc/odoo/openerp-server.conf -d $SERVER_SUBDOMAIN -u saas_server_docker --stop-after-init
+	echo "Upgrading docker modules on portal database"
+	openerp-server -c /etc/odoo/openerp-server.conf -d $MAIN_DOMAIN -u saas_portal_docker --stop-after-init
 fi
 
 echo "Running openerp-server"
