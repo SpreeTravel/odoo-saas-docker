@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
-
-        <function model="ir.module.module" name="update_list"/>
+    <data noupdate="1">
 
         <record id="saas_server.saas_oauth_provider" model="auth.oauth.provider">
             <field name="client_id">server_client_id</field>

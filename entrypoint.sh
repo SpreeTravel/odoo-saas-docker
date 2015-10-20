@@ -17,6 +17,8 @@ python /etc/odoo/makedb.py
 CUSTOM_MODULES_PATH=/mnt/odoo-custom-addons
 CUSTOM_REPOS_PATH=/mnt/odoo-custom-repos
 
+cd /mnt/odoo-saas-tools && git pull origin upstream
+
 if [ ! -f /mnt/odoo-saas-tools/firstrun.lock ]
 then
 	echo "Cloning custom addons repositories into $CUSTOM_MODULES_PATH"
@@ -54,7 +56,6 @@ then
 	echo "Done" > /mnt/odoo-saas-tools/firstrun.lock
 else
 	echo "Databases already existant... updating Git repositories"
-	cd /mnt/odoo-saas-tools && git pull origin upstream
 
 	rm -rf $CUSTOM_MODULES_PATH/*
 
