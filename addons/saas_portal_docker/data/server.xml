@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
-
-        <function model="ir.module.module" name="update_list"/>
+    <data noupdate="1">
 
         <record id="server1_com" model="saas_portal.server">
             <field name="name">server_subdomain</field>

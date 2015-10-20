@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <function model="ir.module.module" name="update_list"/>
+
+    </data>
+</openerp>

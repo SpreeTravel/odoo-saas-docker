@@ -6,7 +6,8 @@
     'website': 'https://it-projects.info',
     'depends': ['saas_server'],
     'data': [
-        'data/provider.xml'
+        'data/provider.xml',
+        'data/update_addons_list.xml'
     ],
     'installable': True,
 }
